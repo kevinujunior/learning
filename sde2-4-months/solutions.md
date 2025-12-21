@@ -1878,4 +1878,4 @@ This document provides example solutions to a selection of practice questions fr
 
         @Override
         public void lock(Door door) {
-            System.out
+            System.out.println
