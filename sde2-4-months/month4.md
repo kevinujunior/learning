@@ -317,18 +317,3 @@
     4.  Design a system for user authentication and authorization that supports multiple client types (web, mobile).
 
 ---
-
-## Indexed Solution Section (Coming Soon in a Separate Document/File for brevity)
-
-This section would typically include detailed solutions to all the practice questions mentioned throughout the 4 months, indexed by topic and question number. Each solution would include:
-*   Problem statement
-*   Solution code (for coding problems)
-*   Explanation of the logic / System Design approach
-*   Time and Space Complexity analysis (for algorithms)
-*   Discussion of trade-offs, design pattern applications, and SOLID principle adherence (for system design)
-
-**Note:** Providing detailed solutions for all practice questions here would make this document excessively long. It is recommended to maintain a separate repository or document for your practice solutions, allowing you to link to specific solutions for each question.
-
----
-
-This four-month plan is intensive but comprehensive. The last month focuses heavily on system design, which often differentiates junior from senior roles. Consistent practice, especially with mock interviews, is crucial to translate your knowledge into interview success. Good luck!
