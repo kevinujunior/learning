@@ -1950,7 +1950,7 @@
             System.out.println("Tree 4 is a BST (Inorder Method): " + checker.isValidBSTInorder(root4)); // false
         }
     }
-```
+    ```
 
 # Tree Interview Solutions
 
@@ -1962,39 +1962,40 @@
 
 **Java Code:**
 
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
+ ```java
 
-class Solution {
-    public TreeNode invertTree(TreeNode root) {
-        if (root == null) {
-            return null;
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {}
+        TreeNode(int val) { this.val = val; }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
         }
-
-        // Swap the left and right children
-        TreeNode temp = root.left;
-        root.left = root.right;
-        root.right = temp;
-
-        // Recursively invert the left and right subtrees
-        invertTree(root.left);
-        invertTree(root.right);
-
-        return root;
     }
-}
-```
+
+    class Solution {
+        public TreeNode invertTree(TreeNode root) {
+            if (root == null) {
+                return null;
+            }
+
+            // Swap the left and right children
+            TreeNode temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+
+            // Recursively invert the left and right subtrees
+            invertTree(root.left);
+            invertTree(root.right);
+
+            return root;
+        }
+    }    
+ ```
 
 **Interview Perspective:**
 
@@ -2011,42 +2012,42 @@ class Solution {
 
 **Java Code:**
 
-```java
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.List;
-import java.util.ArrayList;
+ ```java
+    import java.util.LinkedList;
+    import java.util.Queue;
+    import java.util.List;
+    import java.util.ArrayList;
 
-class Solution {
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (root == null) {
+    class Solution {
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            List<List<Integer>> result = new ArrayList<>();
+            if (root == null) {
+                return result;
+            }
+
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.offer(root);
+
+            while (!queue.isEmpty()) {
+                int levelSize = queue.size();
+                List<Integer> currentLevel = new ArrayList<>();
+                for (int i = 0; i < levelSize; i++) {
+                    TreeNode currentNode = queue.poll();
+                    currentLevel.add(currentNode.val);
+
+                    if (currentNode.left != null) {
+                        queue.offer(currentNode.left);
+                    }
+                    if (currentNode.right != null) {
+                        queue.offer(currentNode.right);
+                    }
+                }
+                result.add(currentLevel);
+            }
             return result;
         }
-
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-
-        while (!queue.isEmpty()) {
-            int levelSize = queue.size();
-            List<Integer> currentLevel = new ArrayList<>();
-            for (int i = 0; i < levelSize; i++) {
-                TreeNode currentNode = queue.poll();
-                currentLevel.add(currentNode.val);
-
-                if (currentNode.left != null) {
-                    queue.offer(currentNode.left);
-                }
-                if (currentNode.right != null) {
-                    queue.offer(currentNode.right);
-                }
-            }
-            result.add(currentLevel);
-        }
-        return result;
     }
-}
-```
+ ```
 
 **Interview Perspective:**
 
@@ -2063,131 +2064,131 @@ class Solution {
 
 **Java Code (Recursive):**
 
-```java
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack; // For iterative approach
+ ```java
+    import java.util.ArrayList;
+    import java.util.List;
+    import java.util.Stack; // For iterative approach
 
-class Solution {
-    // Pre-order Traversal (Root, Left, Right)
-    public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        preorder(root, result);
-        return result;
-    }
-
-    private void preorder(TreeNode node, List<Integer> result) {
-        if (node == null) {
-            return;
-        }
-        result.add(node.val);      // Visit root
-        preorder(node.left, result);  // Traverse left
-        preorder(node.right, result); // Traverse right
-    }
-
-    // In-order Traversal (Left, Root, Right)
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        inorder(root, result);
-        return result;
-    }
-
-    private void inorder(TreeNode node, List<Integer> result) {
-        if (node == null) {
-            return;
-        }
-        inorder(node.left, result);   // Traverse left
-        result.add(node.val);       // Visit root
-        inorder(node.right, result);  // Traverse right
-    }
-
-    // Post-order Traversal (Left, Right, Root)
-    public List<Integer> postorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        postorder(root, result);
-        return result;
-    }
-
-    private void postorder(TreeNode node, List<Integer> result) {
-        if (node == null) {
-            return;
-        }
-        postorder(node.left, result);   // Traverse left
-        postorder(node.right, result);  // Traverse right
-        result.add(node.val);         // Visit root
-    }
-
-    // Iterative Pre-order Traversal using Stack
-    public List<Integer> preorderTraversalIterative(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        if (root == null) {
+    class Solution {
+        // Pre-order Traversal (Root, Left, Right)
+        public List<Integer> preorderTraversal(TreeNode root) {
+            List<Integer> result = new ArrayList<>();
+            preorder(root, result);
             return result;
         }
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
 
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            result.add(node.val);
-            if (node.right != null) { // Push right first so left is processed first
-                stack.push(node.right);
+        private void preorder(TreeNode node, List<Integer> result) {
+            if (node == null) {
+                return;
             }
-            if (node.left != null) {
-                stack.push(node.left);
-            }
+            result.add(node.val);      // Visit root
+            preorder(node.left, result);  // Traverse left
+            preorder(node.right, result); // Traverse right
         }
-        return result;
-    }
 
-    // Iterative In-order Traversal using Stack
-    public List<Integer> inorderTraversalIterative(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        if (root == null) {
+        // In-order Traversal (Left, Root, Right)
+        public List<Integer> inorderTraversal(TreeNode root) {
+            List<Integer> result = new ArrayList<>();
+            inorder(root, result);
             return result;
         }
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode current = root;
 
-        while (current != null || !stack.isEmpty()) {
-            while (current != null) {
-                stack.push(current);
-                current = current.left;
+        private void inorder(TreeNode node, List<Integer> result) {
+            if (node == null) {
+                return;
             }
-            current = stack.pop();
-            result.add(current.val);
-            current = current.right;
+            inorder(node.left, result);   // Traverse left
+            result.add(node.val);       // Visit root
+            inorder(node.right, result);  // Traverse right
         }
-        return result;
-    }
 
-    // Iterative Post-order Traversal using Two Stacks (or one stack with extra check)
-    public List<Integer> postorderTraversalIterative(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        if (root == null) {
+        // Post-order Traversal (Left, Right, Root)
+        public List<Integer> postorderTraversal(TreeNode root) {
+            List<Integer> result = new ArrayList<>();
+            postorder(root, result);
             return result;
         }
-        Stack<TreeNode> s1 = new Stack<>();
-        Stack<TreeNode> s2 = new Stack<>();
-        s1.push(root);
 
-        while (!s1.isEmpty()) {
-            TreeNode node = s1.pop();
-            s2.push(node);
-            if (node.left != null) {
-                s1.push(node.left);
+        private void postorder(TreeNode node, List<Integer> result) {
+            if (node == null) {
+                return;
             }
-            if (node.right != null) {
-                s1.push(node.right);
-            }
+            postorder(node.left, result);   // Traverse left
+            postorder(node.right, result);  // Traverse right
+            result.add(node.val);         // Visit root
         }
 
-        while (!s2.isEmpty()) {
-            result.add(s2.pop().val);
+        // Iterative Pre-order Traversal using Stack
+        public List<Integer> preorderTraversalIterative(TreeNode root) {
+            List<Integer> result = new ArrayList<>();
+            if (root == null) {
+                return result;
+            }
+            Stack<TreeNode> stack = new Stack<>();
+            stack.push(root);
+
+            while (!stack.isEmpty()) {
+                TreeNode node = stack.pop();
+                result.add(node.val);
+                if (node.right != null) { // Push right first so left is processed first
+                    stack.push(node.right);
+                }
+                if (node.left != null) {
+                    stack.push(node.left);
+                }
+            }
+            return result;
         }
-        return result;
+
+        // Iterative In-order Traversal using Stack
+        public List<Integer> inorderTraversalIterative(TreeNode root) {
+            List<Integer> result = new ArrayList<>();
+            if (root == null) {
+                return result;
+            }
+            Stack<TreeNode> stack = new Stack<>();
+            TreeNode current = root;
+
+            while (current != null || !stack.isEmpty()) {
+                while (current != null) {
+                    stack.push(current);
+                    current = current.left;
+                }
+                current = stack.pop();
+                result.add(current.val);
+                current = current.right;
+            }
+            return result;
+        }
+
+        // Iterative Post-order Traversal using Two Stacks (or one stack with extra check)
+        public List<Integer> postorderTraversalIterative(TreeNode root) {
+            List<Integer> result = new ArrayList<>();
+            if (root == null) {
+                return result;
+            }
+            Stack<TreeNode> s1 = new Stack<>();
+            Stack<TreeNode> s2 = new Stack<>();
+            s1.push(root);
+
+            while (!s1.isEmpty()) {
+                TreeNode node = s1.pop();
+                s2.push(node);
+                if (node.left != null) {
+                    s1.push(node.left);
+                }
+                if (node.right != null) {
+                    s1.push(node.right);
+                }
+            }
+
+            while (!s2.isEmpty()) {
+                result.add(s2.pop().val);
+            }
+            return result;
+        }
     }
-}
-```
+ ```
 
 **Interview Perspective:**
 
