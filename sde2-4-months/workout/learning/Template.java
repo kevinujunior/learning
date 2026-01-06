@@ -110,6 +110,15 @@ public class Template {
             System.out.println(listIterator.next());
         }
 
+
+        //2d list
+        List<List<Integer>> list2d = new ArrayList<>();
+
+        list2d.forEach(row-> {
+            row.forEach(val -> System.out.print(val + " "));
+            System.out.println("");
+        });
+
         // return new ArrayList<>(List.of("A", "B", "C")); // Java 9+
 
         // important methods -> add(E e), add(int index, E e), addAll(Collection<?
