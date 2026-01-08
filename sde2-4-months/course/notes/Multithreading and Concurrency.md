@@ -1392,4 +1392,4 @@ The `java.util.concurrent.locks` package provides a more flexible and powerful a
 *   **Use `try-finally` for Locks**: Always release `Lock`s in a `finally` block to prevent deadlocks and resource leaks.
 *   **Keep Critical Sections Small**: Minimize the amount of code inside `synchronized` blocks or `Lock.lock()/unlock()` sections to maximize concurrency.
 *   **Use `ReentrantLock` for Advanced Scenarios**: When you need fairness, timed `tryLock()`, interruptible lock acquisition, or multiple `Condition` objects, `ReentrantLock` is superior to `synchronized`.
-*   **Understand `happens-before`**: It's the foundation of JMM and
+*   **Understand `happens-before`**: It's the foundation of JMM.
