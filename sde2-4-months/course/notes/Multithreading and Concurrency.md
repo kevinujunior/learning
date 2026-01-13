@@ -1010,7 +1010,6 @@ The `java.util.concurrent.locks` package provides a more flexible and powerful a
 
 ### 15.1 ThreadPoolExecutor
 
-This cheat sheet covers essential concepts of `ThreadPoolExecutor` in Java, geared towards intermediate-level interview questions.
 
 #### 1. Introduction to ThreadPoolExecutor
 
@@ -1052,7 +1051,7 @@ When the `ThreadPoolExecutor` cannot accept a new task (e.g., when the executor 
     *   **`ThreadPoolExecutor.DiscardOldestPolicy`:** Discards the oldest unhandled task in the `workQueue` and then retries to submit the new task (which might still be rejected).
 *   **Custom Policy:** You can implement the `RejectedExecutionHandler` interface to define your own custom rejection logic.
 
-#### 6. ThreadPoolExecutor's Internal Working Flow
+#### 4. ThreadPoolExecutor's Internal Working Flow
 
 1.  If the number of running threads is less than `corePoolSize`, a new thread is created and the task is executed.
 2.  If the number of running threads is equal to `corePoolSize` or more, the task is added to the `workQueue`.
@@ -1060,7 +1059,7 @@ When the `ThreadPoolExecutor` cannot accept a new task (e.g., when the executor 
     *   If the number of running threads is less than `maximumPoolSize`, a new thread is created and the task is executed.
     *   If the number of running threads is equal to `maximumPoolSize`, the task is rejected by the `RejectedExecutionHandler`.
 
-#### 7. Common Interview Questions 
+#### 5. Common Interview Questions 
 
 
 *   **Describe the trade-offs of different `RejectedExecutionHandler` policies.**
@@ -1073,7 +1072,7 @@ When the `ThreadPoolExecutor` cannot accept a new task (e.g., when the executor 
     *   **Monitoring:** Start with reasonable defaults, then monitor CPU usage, queue length, and response times, adjusting as needed.
 
 
-#### 8. Example Usage
+#### 6. Example Usage
 
 ```java
 import java.util.concurrent.*;
