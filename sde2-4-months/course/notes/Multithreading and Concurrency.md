@@ -952,6 +952,8 @@ The `java.util.concurrent.locks` package provides a more flexible and powerful a
     *   `boolean isShutdown()`: Returns `true` if this executor has been shut down.
     *   `boolean isTerminated()`: Returns `true` if all tasks have completed following `shutdown`.
     *   `boolean awaitTermination(long timeout, TimeUnit unit)`: Blocks until all tasks have completed execution after a shutdown request, or the timeout occurs, or the current thread is interrupted.
+    *   `List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks)`: Executes the given tasks, returning a list of `Future`s. Each `Future` is completed when its task completes.
+    *   `T invokeAny(Collection<? extends Callable<T>> tasks)`: Executes the given tasks, returning the result of one that completes successfully (first one). All other tasks are cancelled.
 *   **`Executors` Utility Class**: Factory methods for creating common `ExecutorService` types:
     *   `Executors.newFixedThreadPool(int nThreads)`: Creates a thread pool that reuses a fixed number of threads operating off a shared unbounded queue.
     *   `Executors.newCachedThreadPool()`: Creates a thread pool that creates new threads as needed, but reuses previously constructed threads when they are available. Good for many short-lived tasks.
@@ -1005,6 +1007,152 @@ The `java.util.concurrent.locks` package provides a more flexible and powerful a
         }
     }
     ```
+
+### 15.1 ThreadPoolExecutor
+
+This cheat sheet covers essential concepts of `ThreadPoolExecutor` in Java, geared towards intermediate-level interview questions.
+
+#### 1. Introduction to ThreadPoolExecutor
+
+*   **What is it?** `ThreadPoolExecutor` is a core class in `java.util.concurrent` package that manages a pool of worker threads. It's designed to execute submitted `Runnable` or `Callable` tasks.
+*   **Why use it?**
+    *   **Resource Management:** Reuses threads, reducing the overhead of creating and destroying threads for each task.
+    *   **Performance:** Improves responsiveness and throughput by managing thread lifecycle efficiently.
+    *   **Concurrency Control:** Provides mechanisms to control the number of concurrent threads.
+    *   **Decoupling:** Separates task submission from task execution.
+*   **Key Interface:** Implements the `ExecutorService` interface.
+
+#### 2. Core Constructor Parameters
+
+Understanding these parameters is crucial for configuring a `ThreadPoolExecutor` effectively.
+
+`ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)`
+
+*   **`corePoolSize`**: The number of threads to keep in the pool, even if they are idle, unless `allowCoreThreadTimeOut` is set to true. **Important:** These threads are created when tasks are submitted, not necessarily at initialization.
+*   **`maximumPoolSize`**: The maximum number of threads allowed in the pool. When the `workQueue` is full, new tasks will cause new threads (up to `maximumPoolSize`) to be created.
+*   **`keepAliveTime`**: When the number of threads is greater than `corePoolSize`, this is the maximum time that excess idle threads will wait for new tasks before terminating.
+*   **`unit`**: The time unit for the `keepAliveTime` argument (e.g., `TimeUnit.SECONDS`).
+*   **`workQueue`**: The queue used to hold tasks before they are executed. This queue will only hold `Runnable` tasks.
+    *   **Common types:**
+        *   `LinkedBlockingQueue`: Unbounded queue (can lead to `OutOfMemoryError` if tasks are submitted faster than processed and `maximumPoolSize` is effectively ignored).
+        *   `ArrayBlockingQueue`: Bounded queue.
+        *   `SynchronousQueue`: A queue with no internal capacity. Each insertion must wait for a corresponding removal, and vice-versa.
+*   **`threadFactory`**: An object used to create new threads. Allows customization of thread names, daemon status, priority, etc.
+*   **`handler`**: The policy for handling tasks that cannot be executed. This happens when the executor has been shut down, or when `maximumPoolSize` and `workQueue` are both full.
+
+
+#### 3. RejectedExecutionHandler (Rejection Policy)
+
+When the `ThreadPoolExecutor` cannot accept a new task (e.g., when the executor is shut down, or `workQueue` is full and `maximumPoolSize` has been reached), the `RejectedExecutionHandler` is invoked.
+
+*   **Default Policies:**
+    *   **`ThreadPoolExecutor.AbortPolicy` (Default):** Throws a `RejectedExecutionException`. **Important:** This is the default behavior and can crash your application if not handled.
+    *   **`ThreadPoolExecutor.CallerRunsPolicy`:** The thread that submitted the task (caller) executes the task itself. This provides a simple form of backpressure.
+    *   **`ThreadPoolExecutor.DiscardPolicy`:** Silently discards the rejected task.
+    *   **`ThreadPoolExecutor.DiscardOldestPolicy`:** Discards the oldest unhandled task in the `workQueue` and then retries to submit the new task (which might still be rejected).
+*   **Custom Policy:** You can implement the `RejectedExecutionHandler` interface to define your own custom rejection logic.
+
+#### 6. ThreadPoolExecutor's Internal Working Flow
+
+1.  If the number of running threads is less than `corePoolSize`, a new thread is created and the task is executed.
+2.  If the number of running threads is equal to `corePoolSize` or more, the task is added to the `workQueue`.
+3.  If the `workQueue` is full:
+    *   If the number of running threads is less than `maximumPoolSize`, a new thread is created and the task is executed.
+    *   If the number of running threads is equal to `maximumPoolSize`, the task is rejected by the `RejectedExecutionHandler`.
+
+#### 7. Common Interview Questions 
+
+
+*   **Describe the trade-offs of different `RejectedExecutionHandler` policies.**
+    *   `AbortPolicy`: Simplest, but can crash. Good for critical tasks where failure must be immediately apparent.
+    *   `CallerRunsPolicy`: Provides backpressure, useful for slowing down task submission when the executor is overloaded.
+    *   `DiscardPolicy`/`DiscardOldestPolicy`: Useful for non-critical tasks where losing some tasks is acceptable (e.g., logging, metrics).
+*   **How would you determine appropriate `corePoolSize` and `maximumPoolSize` values?**
+    *   **CPU-bound tasks:** `corePoolSize = number_of_cores`. `maximumPoolSize` can be similar or slightly higher.
+    *   **IO-bound tasks:** `corePoolSize = number_of_cores * (1 + wait_time / service_time)`. `maximumPoolSize` can be significantly higher to account for threads blocked on I/O.
+    *   **Monitoring:** Start with reasonable defaults, then monitor CPU usage, queue length, and response times, adjusting as needed.
+
+
+#### 8. Example Usage
+
+```java
+import java.util.concurrent.*;
+
+public class ThreadPoolExecutorExample {
+
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+
+        // 1. Create a ThreadPoolExecutor
+        // Core: 2, Max: 4, KeepAlive: 10s, Bounded Queue: 2, Default Rejected Handler
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                2,                          // corePoolSize
+                4,                          // maximumPoolSize
+                10,                         // keepAliveTime
+                TimeUnit.SECONDS,           // unit
+                new ArrayBlockingQueue<>(2),// workQueue (bounded)
+                Executors.defaultThreadFactory(), // threadFactory
+                new ThreadPoolExecutor.AbortPolicy() // rejectedExecutionHandler
+        );
+
+        // 2. Submit Runnable tasks
+        System.out.println("Submitting Runnable tasks...");
+        for (int i = 0; i < 6; i++) { // Submit 6 tasks
+            final int taskId = i;
+            executor.execute(() -> {
+                System.out.println("Executing Runnable Task " + taskId + " by " + Thread.currentThread().getName());
+                try {
+                    TimeUnit.SECONDS.sleep(2); // Simulate work
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    System.out.println("Runnable Task " + taskId + " interrupted.");
+                }
+            });
+        }
+
+        // 3. Submit Callable tasks and get Future results
+        System.out.println("\nSubmitting Callable tasks...");
+        Future<String> future1 = executor.submit(() -> {
+            System.out.println("Executing Callable Task 1 by " + Thread.currentThread().getName());
+            TimeUnit.SECONDS.sleep(1);
+            return "Result of Callable 1";
+        });
+
+        Future<String> future2 = executor.submit(() -> {
+            System.out.println("Executing Callable Task 2 by " + Thread.currentThread().getName());
+            TimeUnit.SECONDS.sleep(3);
+            return "Result of Callable 2";
+        });
+
+        // Get results from Futures
+        System.out.println("Future 1 Result: " + future1.get());
+        System.out.println("Future 2 Result: " + future2.get());
+
+        // 4. Proper Shutdown
+        System.out.println("\nInitiating shutdown...");
+        executor.shutdown(); // No new tasks accepted, existing tasks complete
+
+        try {
+            // Wait for existing tasks to terminate
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                System.out.println("Timeout reached, forcing shutdown...");
+                executor.shutdownNow(); // Interrupt tasks and stop immediately
+            }
+        } catch (InterruptedException e) {
+            System.err.println("Shutdown interrupted: " + e.getMessage());
+            executor.shutdownNow();
+        }
+        System.out.println("Executor has terminated: " + executor.isTerminated());
+
+        // Example of task rejection (if submitted after shutdown or when queue+max full)
+        try {
+            executor.execute(() -> System.out.println("This task should be rejected!"));
+        } catch (RejectedExecutionException e) {
+            System.out.println("Successfully rejected task after shutdown: " + e.getMessage());
+        }
+    }
+}
+```
+
 
 ## 16. `Callable`, `Future`, `CompletableFuture`
 
