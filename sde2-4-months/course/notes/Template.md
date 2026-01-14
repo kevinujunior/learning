@@ -659,12 +659,61 @@ An object that maps keys to values. Cannot contain duplicate keys. Each key can 
     | `V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)` | If the specified key is already associated with a value, attempts to compute a new mapping given the key and its current mapped value. | `chm.computeIfPresent("D", (k, v) -> v + 1);`       | O(1) amortized |
     | `V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction)` | If the specified key is not already associated with a value or is associated with `null`, associates it with the given non-null value. Otherwise, replaces the associated value with the results of the given remapping function. | `chm.merge("F", 1, Integer::sum);`                  | O(1) amortized |
 
+*  **Important Notes**
+    *If any of the mapping function inside (compute,computeIfAbsent or computeIfPresent) returns **null** the key will be removed from the map.*
+
+
 *   **Interview Notes**:
     *   The preferred concurrent map implementation in Java.
     *   Achieves high concurrency by internally segmenting the map (pre-Java 8) or using node-level locking (Java 8+).
     *   Does not allow `null` keys or values to avoid ambiguity in concurrent scenarios (e.g., `get(key)` returning `null` could mean no mapping or a `null` value).
     *   Iterators are "weakly consistent" – they reflect the state of the map at the time of iteration or changes made since. They are not guaranteed to reflect all modifications made after the iterator's creation but will not throw `ConcurrentModificationException`.
 ### 4.5 Queue / Deque
+
+#### 4.5.0 LinkedList (as a Queue)
+
+*   **Declaration / Instantiation**: `LinkedList` implements the `Queue` interface, making it suitable for FIFO (First-In, First-Out) queue operations. It's a doubly-linked list implementation.
+    ```java
+    import java.util.LinkedList;
+    import java.util.Queue;
+    Queue<String> queue = new LinkedList<>();
+    // Specific LinkedList methods are also available if declared as LinkedList
+    LinkedList<String> llQueue = new LinkedList<>();
+    ```
+*   **Important Attributes**: Implements `Queue`, `Deque`, and `List` interfaces. Uses a linked-list structure, so insertion and deletion at ends are efficient.
+*   **Null Handling**: Allows `null` elements.
+*   **Thread-safety**: Not thread-safe. Use `Collections.synchronizedList(new LinkedList<>())` or `ConcurrentLinkedQueue` for thread-safe queue behavior.
+*   **Time Complexity**: O(1) for most queue operations (`offer`, `poll`, `peek`). O(N) for `remove(Object)` or iterating.
+*   **Most Commonly Used Methods (from Queue interface)**:
+    Similar to PriorityQueue except Time complexity is O(1) for all operations.
+
+*   **Interview Notes**:
+    *   **Versatile**: Can be used as a queue, stack, or list.
+    *   **Performance**: Generally good for queue operations, but `ArrayDeque` is often preferred as a queue due to better constant factors and memory locality, especially in single-threaded scenarios.
+    *   Good choice when frequent insertions/deletions from both ends are needed, or when `null` elements are allowed (unlike `ArrayDeque`).
+    
+
+*   **Special Note**: methods you can call depend on the reference type, 
+
+    * Using `Queue<Integer>` as reference
+        ```java
+        Queue<Integer> q = new LinkedList<>();
+        ```
+
+    *   **Reference type**: `LinkedList`
+    *   **Implementation type**: `LinkedList`
+    *   **Which methods are available?**
+        *   Only methods defined in `Queue` and its superinterfaces (`Collection`, `Iterable`).
+        *   You **cannot** directly use methods specific to `LinkedList` (like `getFirst()`, `getLast()`, `addFirst()`, `addLast()`) unless you cast it.
+
+    * Using `LinkedList<Integer>` as reference
+        ```java
+        LinkedList<Integer> q = new LinkedList<>();
+        ```
+    *   **Reference type**: `LinkedList`
+    *   **Implementation type**: `LinkedList`
+    *   **Which methods are available?**
+        *   All methods of LinkedList, including those from `Queue`, `Deque`, `List`, and `Collection`. (Note that LinkedList implements Queue interface)
 
 #### 4.5.1 PriorityQueue
 
@@ -775,6 +824,35 @@ An object that maps keys to values. Cannot contain duplicate keys. Each key can 
     *   The "blocking" nature simplifies concurrency control by handling the waiting logic.
     *   `ArrayBlockingQueue` is useful when you need to control the maximum number of items in the queue to prevent resource exhaustion.
     *   `LinkedBlockingQueue` is often preferred for its higher throughput.
+
+
+#### 4.5.6 Stack
+
+*   **Declaration / Instantiation**: Represents a last-in-first-out (LIFO) stack of objects. Extends `Vector`, which means it's a legacy class and generally **not recommended** for new code due to performance overhead of `Vector`'s synchronization.
+    ```java
+    import java.util.Stack;
+    Stack<String> stack = new Stack<>();
+    ```
+*   **Important Attributes**: Extends `Vector`, making it thread-safe (synchronized). This synchronization often leads to performance bottlenecks in single-threaded environments or when finer-grained control over concurrency is needed.
+*   **Null Handling**: Allows `null` elements (inherits from `Vector`).
+*   **Thread-safety**: Thread-safe (all methods are synchronized).
+*   **Time Complexity**: O(1) for `push`, `pop`, `peek`, `empty`. O(N) for `search` (returns 1-based offset).
+*   **Most Commonly Used Methods**:
+
+    | Signature                   | Description                                         | Example Usage         | Time Complexity |
+    | :-------------------------- | :-------------------------------------------------- | :-------------------- | :-------------- |
+    | `E push(E item)`            | Pushes an item onto the top of this stack.          | `stack.push("A")`     | O(1)            |
+    | `E pop()`                   | Removes the object at the top of this stack and returns that object. | `stack.pop()`         | O(1)            |
+    | `E peek()`                  | Looks at the object at the top of this stack without removing it from the stack. | `stack.peek()`        | O(1)            |
+    | `boolean empty()`           | Tests if this stack is empty.                       | `stack.empty()`       | O(1)            |
+    | `int search(Object o)`      | Returns the 1-based position where an object is on this stack. Returns -1 if the object is not on this stack. | `stack.search("A")`   | O(N)            |
+
+*   **Interview Notes**:
+    *   **Avoid in new code**: Due to its legacy nature and the overhead of `Vector`'s synchronization, `ArrayDeque` is generally preferred when you need a stack.
+    *   **Alternative**: Use `Deque<E> stack = new ArrayDeque<>();` for a more efficient and modern stack implementation.
+    *   Good to know for historical context or maintaining older codebases.
+
+Here's an image illustrating the basic LIFO (Last-In-First-Out) principle of a stack: 
 
 ## 5. Concurrent Collections & Thread-Safety
 
