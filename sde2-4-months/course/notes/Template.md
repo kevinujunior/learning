@@ -691,8 +691,29 @@ An object that maps keys to values. Cannot contain duplicate keys. Each key can 
     *   **Versatile**: Can be used as a queue, stack, or list.
     *   **Performance**: Generally good for queue operations, but `ArrayDeque` is often preferred as a queue due to better constant factors and memory locality, especially in single-threaded scenarios.
     *   Good choice when frequent insertions/deletions from both ends are needed, or when `null` elements are allowed (unlike `ArrayDeque`).
+    
 
-Here's an illustration of the FIFO (First-In-First-Out) principle of a queue: 
+*   **Special Note**: methods you can call depend on the reference type, 
+
+    * Using `Queue<Integer>` as reference
+        ```java
+        Queue<Integer> q = new LinkedList<>();
+        ```
+
+    *   **Reference type**: `LinkedList`
+    *   **Implementation type**: `LinkedList`
+    *   **Which methods are available?**
+        *   Only methods defined in `Queue` and its superinterfaces (`Collection`, `Iterable`).
+        *   You **cannot** directly use methods specific to `LinkedList` (like `getFirst()`, `getLast()`, `addFirst()`, `addLast()`) unless you cast it.
+
+    * Using `LinkedList<Integer>` as reference
+        ```java
+        LinkedList<Integer> q = new LinkedList<>();
+        ```
+    *   **Reference type**: `LinkedList`
+    *   **Implementation type**: `LinkedList`
+    *   **Which methods are available?**
+        *   All methods of LinkedList, including those from `Queue`, `Deque`, `List`, and `Collection`. (Note that LinkedList implements Queue interface)
 
 #### 4.5.1 PriorityQueue
 
