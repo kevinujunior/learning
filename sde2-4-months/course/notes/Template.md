@@ -659,6 +659,10 @@ An object that maps keys to values. Cannot contain duplicate keys. Each key can 
     | `V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)` | If the specified key is already associated with a value, attempts to compute a new mapping given the key and its current mapped value. | `chm.computeIfPresent("D", (k, v) -> v + 1);`       | O(1) amortized |
     | `V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction)` | If the specified key is not already associated with a value or is associated with `null`, associates it with the given non-null value. Otherwise, replaces the associated value with the results of the given remapping function. | `chm.merge("F", 1, Integer::sum);`                  | O(1) amortized |
 
+*  **Important Notes**
+    *If any of the mapping function inside (compute,computeIfAbsent or computeIfPresent) returns **null** the key will be removed from the map.*
+
+
 *   **Interview Notes**:
     *   The preferred concurrent map implementation in Java.
     *   Achieves high concurrency by internally segmenting the map (pre-Java 8) or using node-level locking (Java 8+).
