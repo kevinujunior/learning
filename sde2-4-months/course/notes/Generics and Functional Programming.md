@@ -165,6 +165,8 @@ To allow methods specific to the bounded type to be called on the type parameter
     List<Double> doubles = Arrays.asList(1.1, 2.2, 3.3);
     printNumbers(doubles); // Works
     ```
+**Cheat Note** 
+* `public class Box<T extends Number>` T extends Number means that T must be Number itself or any class that extends Number. Because T is guaranteed to be a Number, you can safely call value.doubleValue() inside the Box class
 
 **Lower Bounded Wildcards (`<? super Type>`):**
 
@@ -190,6 +192,8 @@ To allow methods specific to the bounded type to be called on the type parameter
     List<Object> objList = new ArrayList<>();
     addIntegers(objList); // Works (list becomes List<Object>)
     ```
+**Cheat Note**
+*  `List<? super Integer>` means the list can contain `Integer` objects or any type that is a superclass of `Integer`. This is primarily useful for producers/consumers; `? super T` is used when you are adding elements to the list (it's a "consumer").
 
 **Unbounded Wildcards (`<?>`):**
 
