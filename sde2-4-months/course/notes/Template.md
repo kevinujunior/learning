@@ -918,6 +918,21 @@ Concurrent collections (from `java.util.concurrent` package) are designed to pro
     *   **Pros**: Provides built-in flow control for producer-consumer scenarios. Threads automatically wait when necessary.
     *   **Cons**: `put`/`take` operations can block, potentially increasing latency for individual operations.
 
+### Cheat Notes
+
+*   **`public record Pair<A, B>(A first, B second) {}`**
+    can be used as a pair (just like c++ pair<T,U>)
+    can also be used as Tuple just add number of values
+    Use case
+    ```java
+    Pair<Integer, String> p = new Pair<>(1, "one");
+    int key = p.first();
+    String value = p.second();
+    ```
+    **Note** :  Whatever the name you pass in key (here first and second) will be automatically available for access.
+
+    You can also choose a custom class for this case.
+
 ### Interview Notes (General Collections)
 
 *   **Choosing the Right Collection**: This is a frequent interview question. Understand the trade-offs:

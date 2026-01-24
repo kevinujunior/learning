@@ -166,7 +166,7 @@ To allow methods specific to the bounded type to be called on the type parameter
     printNumbers(doubles); // Works
     ```
 **Cheat Note** 
-* `public class Box<T extends Number>` T extends Number means that T must be Number itself or any class that extends Number. Because T is guaranteed to be a Number, you can safely call value.doubleValue() inside the Box class
+* `public class Box<T extends Number>` T extends Number means that T must be Number itself or any class that extends Number. Because T is guaranteed to be a Number, you can safely call `value.doubleValue()` inside the Box class
 
 **Lower Bounded Wildcards (`<? super Type>`):**
 
