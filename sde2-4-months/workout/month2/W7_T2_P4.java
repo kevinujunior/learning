@@ -49,7 +49,6 @@ public class W7_T2_P4 {
 
 
         System.out.println(groupedByCategory);
-
-                    
+    
     }
 }
