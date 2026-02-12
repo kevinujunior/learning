@@ -978,12 +978,21 @@ Concurrent collections (from `java.util.concurrent` package) are designed to pro
 *   **Generics**: Use generics (`List<String>`) to ensure type safety and avoid `ClassCastException` at runtime.
 *   **Immutable Collections (Java 9+)**: `List.of()`, `Set.of()`, `Map.of()`, `Map.ofEntries()` for creating truly immutable collections. These are compact, memory-efficient, and implicitly thread-safe.
 
-
-
 ```java
     //Example usage
     List.of(1, 2, 3);
     Set.of("udit", "rahul");
     Map.of("udit", 1, "rahul", 7);
 ```
+
+
+
+
+*   **`list.sort(comparator)`** : Works only with List implementations (ArrayList, LinkedList, Vector etc.)
+
+*   **`Collections.sort()`** : Both works the same, Prefer list.sort(), it is more clean.
+
+*   **`Comparator.comparing()`** : can be used in TreeSet, TreeMap, PriorityQueue, ConcurrentSkipListSet, ConcurrentSkipListMap, We can pass Comparator.comparing inside list.sort() to sort.
+
+
 
