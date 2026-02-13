@@ -1,8 +1,9 @@
 import java.util.*;
 
+// Represents an edge to a vertex with a given weight
 class Edge {
-    int vertex;
-    int dist;
+    int vertex; // destination vertex
+    int dist;   // edge weight OR current distance (when used in heap)
 
     Edge(int vertex, int dist) {
         this.vertex = vertex;
@@ -10,22 +11,24 @@ class Edge {
     }
 }
 
+// Graph represented using adjacency list
 class Graph {
-    private int V;
+    private int V; // number of vertices
     private List<List<Edge>> adj;
 
     Graph(int V) {
         this.V = V;
         adj = new ArrayList<>(V);
+        // Initialize adjacency list for each vertex
         for (int i = 0; i < V; i++) {
             adj.add(new ArrayList<>());
         }
     }
 
-    // Adds an undirected weighted edge (u <-> v)
+    // Adds an undirected weighted edge
     public void addEdge(int u, int v, int w) {
-        adj.get(u).add(new Edge(v,w));
-        adj.get(v).add(new Edge(u,w));
+        adj.get(u).add(new Edge(v, w));
+        adj.get(v).add(new Edge(u, w));
     }
 
     public int size() {
@@ -40,49 +43,56 @@ class Graph {
 public class Dijkstra {
 
     private Graph graph;
-    private int start;
+    private int start; // source vertex
 
     Dijkstra(Graph graph, int start) {
         this.graph = graph;
         this.start = start;
     }
 
+    // Time Complexity: O((V + E) log V)
     void dijkstra() {
 
-        // Min-heap based on distance
-        Queue<Edge> minHeap =
-                new PriorityQueue<>(Comparator.comparingInt(n -> n.dist));
+        // Min-heap ordered by shortest distance found so far
+        PriorityQueue<Edge> minHeap =
+                new PriorityQueue<>(Comparator.comparingInt(e -> e.dist));
 
-        int[] dist = new int[graph.size()];
+        int[] dist = new int[graph.size()];     // shortest distance from source
+        boolean[] vis = new boolean[graph.size()]; // marks finalized vertices
         Arrays.fill(dist, Integer.MAX_VALUE);
 
         List<List<Edge>> adj = graph.getAdj();
 
-        minHeap.offer(new Edge(start, 0));
+        // Initialize source
         dist[start] = 0;
+        minHeap.offer(new Edge(start, 0));
 
         while (!minHeap.isEmpty()) {
+
+            // Extract vertex with minimum distance
             Edge current = minHeap.poll();
             int u = current.vertex;
-            int currentDist = current.dist;
 
-            // Skip outdated entries
-            if (currentDist > dist[u]) continue;
+            // Skip if shortest path to u is already finalized
+            if (vis[u]) continue;
+            vis[u] = true;
 
-            // Relax all neighbors
+            // Relax all adjacent edges of u
             for (Edge edge : adj.get(u)) {
                 int v = edge.vertex;
                 int weight = edge.dist;
-                
-                //if distance from path u to v is lesser than from any other path
-                int newDist = currentDist + weight;
-                if (newDist < dist[v]) {
+
+                int newDist = dist[u] + weight;
+
+                // Update distance if a shorter path is found
+                if (!vis[v] && newDist < dist[v]) {
                     dist[v] = newDist;
                     minHeap.offer(new Edge(v, newDist));
                 }
             }
         }
 
+        // Final shortest distances from source
         System.out.println(Arrays.toString(dist));
     }
 
@@ -97,6 +107,7 @@ public class Dijkstra {
         g.addEdge(0, 2, 7);
         g.addEdge(0, 3, 4);
 
+        // Run Dijkstra from source vertex 0
         Dijkstra d = new Dijkstra(g, 0);
         d.dijkstra();
     }
