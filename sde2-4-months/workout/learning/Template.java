@@ -267,4 +267,20 @@ public class Template {
     // boolean add(E e), boolean offer(E e), E remove(), E poll(), E element(),
     // E peek(), int size(), boolean isEmpty(), boolean contains(Object o),
     // Iterator<E> iterator()
+
+
+    //4 directions in a matrix
+    static int[][] DIRS = {
+        {0, 1},   // right
+        {1, 0},   // down
+        {0, -1},  // left
+        {-1, 0}   // up
+    };
+
+
+    //valid function for a matrix
+    boolean isValid(int m,int n, int i, int j){
+        return i>=0 && i<m && j>=0 && j<n;
+    }
+
 }

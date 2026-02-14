@@ -693,7 +693,7 @@ An object that maps keys to values. Cannot contain duplicate keys. Each key can 
     *   Good choice when frequent insertions/deletions from both ends are needed, or when `null` elements are allowed (unlike `ArrayDeque`).
     
 
-*   **Special Note**: methods you can call depend on the reference type, 
+*   **Cheat Note**: methods you can call depend on the reference type, 
 
     * Using `Queue<Integer>` as reference
         ```java
@@ -749,6 +749,9 @@ An object that maps keys to values. Cannot contain duplicate keys. Each key can 
 *   **Declaration / Instantiation**: Resizable-array implementation of the `Deque` interface. Faster than `LinkedList` when used as a stack or queue.
     ```java
     Deque<String> ad = new ArrayDeque<>();
+    //Use this when you want more control. (stack and Queue both)
+    Queue<String> q = new ArrayDeque<>();
+    //Use this when you want pure FIFO BFS semantics.
     ArrayDeque<String> concreteAd = new ArrayDeque<>(10); // Initial capacity
     ```
 *   **Important Attributes**: Implements `Deque` (double-ended queue). Can be used as a stack (LIFO) or a queue (FIFO).
@@ -757,16 +760,33 @@ An object that maps keys to values. Cannot contain duplicate keys. Each key can 
 *   **Time Complexity**: O(1) for most operations (`addFirst`, `addLast`, `removeFirst`, `removeLast`, `peek`). O(N) for `remove(Object)`.
 *   **Most Commonly Used Methods**:
 
-    | Signature                   | Description                                         | Example Usage         | Time Complexity |
-    | :-------------------------- | :-------------------------------------------------- | :-------------------- | :-------------- |
-    | `void addFirst(E e)`        | Adds element to front.                              | `ad.addFirst("A")`    | O(1)            |
-    | `void addLast(E e)`         | Adds element to end.                                | `ad.addLast("B")`     | O(1)            |
-    | `E removeFirst()`           | Removes and returns first element.                  | `ad.removeFirst()`    | O(1)            |
-    | `E removeLast()`            | Removes and returns last element.                   | `ad.removeLast()`     | O(1)            |
-    | `E peekFirst()`             | Retrieves first element without removing.           | `ad.peekFirst()`      | O(1)            |
-    | `E peekLast()`              | Retrieves last element without removing.            | `ad.peekLast()`       | O(1)            |
-    | `boolean offerFirst(E e)`   | Adds to front (returns false if full, rare for AD). | `ad.offerFirst("C")`  | O(1)            |
-    | `boolean offerLast(E e)`    | Adds to end.                                        | `ad.offerLast("D")`   | O(1)            |
+    | Signature                                 | Description                                  | Example Usage                   | Time Complexity |
+    | ----------------------------------------- | -------------------------------------------- | ------------------------------- | --------------- |
+    | `void addFirst(E e)`                      | Adds element to front (throws if fails).     | `ad.addFirst("A")`              | O(1)            |
+    | `void addLast(E e)`                       | Adds element to end (throws if fails).       | `ad.addLast("B")`               | O(1)            |
+    | `boolean offerFirst(E e)`                 | Adds to front safely (false if fails).       | `ad.offerFirst("C")`            | O(1)            |
+    | `boolean offerLast(E e)`                  | Adds to end safely.                          | `ad.offerLast("D")`             | O(1)            |
+    | `boolean add(E e)`                        | Adds element to end (queue style).           | `ad.add("E")`                   | O(1)            |
+    | `boolean offer(E e)`                      | Adds element to end safely.                  | `ad.offer("F")`                 | O(1)            |
+    | `E removeFirst()`                         | Removes and returns first (throws if empty). | `ad.removeFirst()`              | O(1)            |
+    | `E removeLast()`                          | Removes and returns last (throws if empty).  | `ad.removeLast()`               | O(1)            |
+    | `E pollFirst()`                           | Removes and returns first (null if empty).   | `ad.pollFirst()`                | O(1)            |
+    | `E pollLast()`                            | Removes and returns last (null if empty).    | `ad.pollLast()`                 | O(1)            |
+    | `E remove()`                              | Removes and returns first (queue alias).     | `ad.remove()`                   | O(1)            |
+    | `E poll()`                                | Removes and returns first safely.            | `ad.poll()`                     | O(1)            |
+    | `E getFirst()`                            | Returns first (throws if empty).             | `ad.getFirst()`                 | O(1)            |
+    | `E getLast()`                             | Returns last (throws if empty).              | `ad.getLast()`                  | O(1)            |
+    | `E peekFirst()`                           | Returns first without removing.              | `ad.peekFirst()`                | O(1)            |
+    | `E peekLast()`                            | Returns last without removing.               | `ad.peekLast()`                 | O(1)            |
+    | `E element()`                             | Returns first (queue alias, throws).         | `ad.element()`                  | O(1)            |
+    | `E peek()`                                | Returns first safely.                        | `ad.peek()`                     | O(1)            |
+    | `void push(E e)`                          | Pushes element to front (stack).             | `ad.push("G")`                  | O(1)            |
+    | `E pop()`                                 | Pops element from front (stack).             | `ad.pop()`                      | O(1)            |
+    | `boolean removeFirstOccurrence(Object o)` | Removes first matching element.              | `ad.removeFirstOccurrence("A")` | O(n)            |
+    | `boolean removeLastOccurrence(Object o)`  | Removes last matching element.               | `ad.removeLastOccurrence("A")`  | O(n)            |
+
+
+
 
 *   **Interview Notes**:
     *   **Prefer over `LinkedList` for stack/queue**: Generally more efficient for these operations due to array-backing.
@@ -918,6 +938,21 @@ Concurrent collections (from `java.util.concurrent` package) are designed to pro
     *   **Pros**: Provides built-in flow control for producer-consumer scenarios. Threads automatically wait when necessary.
     *   **Cons**: `put`/`take` operations can block, potentially increasing latency for individual operations.
 
+### Cheat Notes
+
+*   **`public record Pair<A, B>(A first, B second) {}`**
+    can be used as a pair (just like c++ pair<T,U>)
+    can also be used as Tuple just add number of values
+    Use case
+    ```java
+    Pair<Integer, String> p = new Pair<>(1, "one");
+    int key = p.first();
+    String value = p.second();
+    ```
+    **Note** :  Whatever the name you pass in key (here first and second) will be automatically available for access.
+
+    You can also choose a custom class for this case.
+
 ### Interview Notes (General Collections)
 
 *   **Choosing the Right Collection**: This is a frequent interview question. Understand the trade-offs:
@@ -943,12 +978,21 @@ Concurrent collections (from `java.util.concurrent` package) are designed to pro
 *   **Generics**: Use generics (`List<String>`) to ensure type safety and avoid `ClassCastException` at runtime.
 *   **Immutable Collections (Java 9+)**: `List.of()`, `Set.of()`, `Map.of()`, `Map.ofEntries()` for creating truly immutable collections. These are compact, memory-efficient, and implicitly thread-safe.
 
-
-
 ```java
     //Example usage
     List.of(1, 2, 3);
     Set.of("udit", "rahul");
     Map.of("udit", 1, "rahul", 7);
 ```
+
+
+
+
+*   **`list.sort(comparator)`** : Works only with List implementations (ArrayList, LinkedList, Vector etc.)
+
+*   **`Collections.sort()`** : Both works the same, Prefer list.sort(), it is more clean.
+
+*   **`Comparator.comparing()`** : can be used in TreeSet, TreeMap, PriorityQueue, ConcurrentSkipListSet, ConcurrentSkipListMap, We can pass Comparator.comparing inside list.sort() to sort.
+
+
 
