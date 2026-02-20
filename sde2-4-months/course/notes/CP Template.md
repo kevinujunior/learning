@@ -269,14 +269,14 @@ public class Main {
         minHeap.offer(5);
         minHeap.offer(1);
         minHeap.offer(10);
-        // out.println(minHeap.poll()); // 1 (smallest)
+        out.println(minHeap.poll()); // 1 (smallest)
 
         // Max-Heap (using a custom comparator)
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
         maxHeap.offer(5);
         maxHeap.offer(1);
         maxHeap.offer(10);
-        // out.println(maxHeap.poll()); // 10 (largest)
+        out.println(maxHeap.poll()); // 10 (largest)
 
         // --- Deque (Double-Ended Queue) ---
         // Can be used as both a stack and a queue, or a true double-ended queue.
