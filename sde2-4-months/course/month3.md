@@ -477,17 +477,3 @@
     *   **Resume Review:** Ensure your resume is up-to-date and highlights your skills and experiences effectively.
 
 ---
-
-## Indexed Solution Section (Coming Soon in a Separate Document/File for brevity)
-
-This section would typically include detailed solutions to all the practice questions mentioned throughout the 3 months, indexed by topic and question number. Each solution would include:
-*   Problem statement
-*   Solution code
-*   Explanation of the logic
-*   Time and Space Complexity analysis
-
-**Note:** Providing detailed solutions for all practice questions here would make this document excessively long. It is recommended to maintain a separate repository or document for your practice solutions, allowing you to link to specific solutions for each question.
-
----
-
-Good luck with your preparation! Consistency and dedicated practice are key to success.
