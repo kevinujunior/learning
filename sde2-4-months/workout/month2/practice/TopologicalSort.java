@@ -111,6 +111,7 @@ public class TopologicalSort {
         }
 
         // If not all nodes are processed, cycle exists
+        // Core Idea - In a DAG, there is always at least one node with in-degree = 0.
         if (order.size() != V) {
             throw new IllegalStateException("Cycle detected");
         }
