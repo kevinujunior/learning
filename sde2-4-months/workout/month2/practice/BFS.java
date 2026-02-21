@@ -27,6 +27,9 @@ public class BFS {
         
         while(!q.isEmpty()){
             int k = q.size();
+
+            //use it only when distance / time / layers needs to tracked
+            // we can remove this loop result will be same
             while(k-- > 0){
                 var front = q.pollFirst();
                 int a = front.first();

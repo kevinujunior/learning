@@ -670,7 +670,7 @@
             System.out.println("DFS starting from vertex 2:");
             g.DFS(2); // Output: 2 0 1 3 (order may vary slightly depending on adjacency list implementation)
             System.out.println("\nBFS starting from vertex 2:");
-            g.BFS(2); // Output: 2 0 1 3
+            g.BFS(2); // Output: 2 0 3 1
         }
     }
     ```
