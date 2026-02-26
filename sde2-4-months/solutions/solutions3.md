@@ -821,10 +821,36 @@
         *   **Post-processing:** It allows for custom logic to be applied to beans after they are initialized.
 
 4.  **What does the `@SpringBootApplication` annotation do?**
-    *   **Answer:** `@SpringBootApplication` is a convenience annotation that combines three commonly used Spring Boot annotations:
-        *   `@Configuration`: Tags the class as a source of bean definitions for the Spring application context.
-        *   `@EnableAutoConfiguration`: Tells Spring Boot to start adding beans based on classpath settings, other beans, and various property settings.
-        *   `@ComponentScan`: Tells Spring to look for other components, configurations, and services in the package where the `@SpringBootApplication` class is located (and its sub-packages), allowing them to be discovered and registered as beans.
+    *   **Answer:** `@SpringBootApplication` is a convenience annotation that combines three essential Spring Boot annotations:
+
+        1.  `@Configuration`: Designates a class as a source of bean definitions for the Spring application context.
+        2.  `@EnableAutoConfiguration`: Instructs Spring Boot to automatically configure beans based on classpath settings, existing beans, and property configurations.
+        3.  `@ComponentScan`: Enables component scanning, allowing Spring to discover and register components, configurations, and services within the application's package (and its sub-packages) as beans. For instance, if the main method is in `src.main.java`, it will scan all classes and sub-packages within it and add them to IOC container (Application context).
+
+        ---
+
+        ### `@Configuration`
+
+        `@Configuration` is a class-level annotation for defining Java-based configuration. Methods within a `@Configuration` class annotated with `@Bean` are registered as beans in the Inversion of Control (IoC) container (Spring ApplicationContext).
+
+        A key advantage of `@Configuration` is its singleton behavior for `@Bean` methods. Spring uses proxying to ensure that the same bean instance from the IoC container is returned, regardless of how many times the `@Bean` method is called. This prevents additional object creation.
+
+        **Example:**
+        `@Configuration` is ideal for setting up database connections, where a single `DataSource` instance is typically required. Spring manages the lifecycle of the object returned by the `@Bean` method, ensuring it's always in the IoC container and not re-created.
+
+        ---
+
+        ### `@Component`
+
+        `@Component` marks a class as a Spring-managed bean, registered in the IoC container via component scanning. By default, when this bean is requested, the same singleton instance is returned.
+
+        However, unlike `@Configuration`, a `@Component` class does not provide special handling for `@Bean` methods. Calling `@Bean` methods directly within a `@Component` class behaves like a normal Java method call and may create new objects, bypassing the IoC container.
+
+        **Examples:**
+        `@Service` and `@Repository` are specialized forms of `@Component`, used for business logic and data access layers, respectively. Any method within a `@Service` or other `@Component` annotated class will execute as a normal method when called.
+
+    
+
 
 5.  **Differentiate between `@Component`, `@Service`, `@Repository`, and `@Controller`.**
     *   **Answer:** All these are specializations of `@Component`, used for semantic clarity and to enable specific features:
@@ -837,6 +863,12 @@
 6.  **How does Spring Boot achieve auto-configuration?**
     *   **Answer:** Spring Boot achieves auto-configuration primarily through:
         *   **`@EnableAutoConfiguration`:** This annotation, part of `@SpringBootApplication`, triggers the auto-configuration mechanism.
+        @EnableAutoConfiguration automatically configure beans based on what is present on the classpath, existing beans, and application properties.
+            Examples:
+            If spring-webmvc is on the classpath → configure DispatcherServlet
+            If spring-data-jpa + DataSource exist → configure EntityManagerFactory
+            If spring-security is present → configure SecurityFilterChain
+
         *   **`spring.factories`:** Spring Boot ships with many auto-configuration classes (e.g., `DataSourceAutoConfiguration`, `WebMvcAutoConfiguration`) defined in `META-INF/spring.factories` files within its starter JARs.
         *   **Conditional Annotations:** These auto-configuration classes use `@Conditional` annotations (e.g., `@ConditionalOnClass`, `@ConditionalOnMissingBean`, `@ConditionalOnProperty`) to decide whether a particular configuration should be applied. For example, `DataSourceAutoConfiguration` will only kick in if a `DataSource` class is on the classpath and no custom `DataSource` bean has been defined by the user.
         *   By scanning the classpath and applying these conditional configurations, Spring Boot automatically sets up necessary beans and configurations based on the libraries present and user-defined settings.
