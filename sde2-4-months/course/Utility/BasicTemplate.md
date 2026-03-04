@@ -709,6 +709,20 @@ public class Main {
         return (x[0] % m + m) % m; // ensure result is positive
     }
 
+    // --------------------- 4. Common Helper Methods ---------------------
+
+
+    static int digitOps(int n){
+        int sum = 0;
+        while(n>0){
+            int c = n%10;
+            sum += c;
+            n = n/10;
+        }
+
+        return sum;
+    }
+
 
 
 
