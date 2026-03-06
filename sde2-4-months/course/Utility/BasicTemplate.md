@@ -133,7 +133,9 @@ public class Main {
         sb.append("Competitive ").append("Programming");
         sb.insert(0, "Java ");
         sb.delete(5, 9); // Deletes "Prog"
-        sb.reverse();
+        sb.reverse(); // reverse the string
+        char c = sb.charAt(1); // get character at a index
+        sb.setCharAt(0,'a'); //set character at a specific position
         out.println(sb.toString()); // Convert back to String
 
         //itereate over StringBuffer
@@ -188,8 +190,9 @@ public class Main {
         set.add("Apple");
         set.add("Banana");
         set.add("Apple"); // Won't add, duplicates not allowed
-        // out.println(set.contains("Banana"));
+        out.println(set.contains("Banana"));
         set.remove("Apple");
+
         // Iterating over a set
         for (String item : set) {
             out.println(item);
@@ -205,6 +208,8 @@ public class Main {
         out.println(treeSet.last());  // 8
         out.println(treeSet.lower(5)); // 2 (element strictly less than 5)
         out.println(treeSet.higher(5)); // 8 (element strictly greater than 5)
+        out.println(treeSet.ceiling(5)); // 2 (Smallest element >= 5)
+        out.println(treeSet.floor(5)); // 8 (Largest element <= 5)
 
 
         // --- HashMap (Unordered, key-value pairs, O(1) average time) ---

@@ -7,9 +7,12 @@
 #### Interview Questions Solutions:
 
 1.  **Explain the difference between `JVM`, `JRE`, and `JDK`.**
-    *   **JVM (Java Virtual Machine):** An abstract machine that provides a runtime environment to execute Java bytecode. It's the specification and runtime instance.
-    *   **JRE (Java Runtime Environment):** An implementation of the JVM and contains the core classes and supporting files. It's what you need to *run* Java applications.
-    *   **JDK (Java Development Kit):** Contains the JRE along with development tools like the Java compiler (`javac`), debugger, and other utilities. It's what you need to *develop* Java applications.
+    *   **JVM (Java Virtual Machine):** JVM is the engine that runs Java bytecode
+    JVM - bytecode to machine code
+    *   **JRE (Java Runtime Environment):** JRE is the environment (including the JVM and libraries) needed to run a Java program.
+    JRE - .class to bytecode
+    *   **JDK (Java Development Kit):** JDK is the full toolkit (including the JRE and development tools) for building Java applications.
+    JDK - .java to .class
 
 2.  **What are the primitive data types in Java?**
     *   Java has eight primitive data types:

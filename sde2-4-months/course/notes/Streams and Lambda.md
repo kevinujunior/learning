@@ -338,6 +338,15 @@ Short-circuiting operations are a special type of intermediate or terminal opera
     IntStream intStream = Arrays.stream(numbers);
     ```
 
+### `String.stream()`
+*   **Example:**
+    ```java
+    String str = "arjunkumardabasay";
+    Stream<String> firstNonRepeated = str.chars()
+            .mapToObj(c -> String.valueOf((char) c))
+    ```
+
+
 ### `Stream.iterate()`
 *   **Purpose:** Creates an infinite sequential ordered stream by repeatedly applying a function to an initial element.
 *   **Signature:**
