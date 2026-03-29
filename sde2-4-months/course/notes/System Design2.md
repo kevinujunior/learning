@@ -1231,3 +1231,48 @@ Stream processing systems handle continuous streams of data, often in real-time.
     *   Can I compare data warehouses vs. data lakes and OLTP vs. OLAP?
     *   Do I understand batch vs. real-time analytics and event-driven architectures?
     *   Can I conceptually explain the difference between at-least-once and exactly-once processing in stream processing?
+
+
+# Database Selection Guide
+
+| Database Type | Examples | Use When | Example Use Case |
+|---|---|---|---|
+| **Relational (SQL)** | PostgreSQL, MySQL, SQLite | Data has clear structure, relationships between entities, need ACID transactions | E-commerce: orders, customers, products with foreign keys |
+| **Document Store** | MongoDB, CouchDB | Schema varies per record, nested/hierarchical data, rapid iteration on schema | CMS: blog posts with varying fields (some have tags, some have images, etc.) |
+| **Key-Value Store** | Redis, DynamoDB | Simple lookups by a single key, high throughput, caching | Session storage, feature flags, shopping cart (userId → cart data) |
+| **Wide-Column** | Cassandra, HBase | Massive scale writes, time-series or event data, known query patterns | IoT sensor readings written millions/sec, queried by device + time range |
+| **Graph** | Neo4j, Amazon Neptune | Data is highly connected, relationships are first-class (not joins) | Social network: "friends of friends who like X", fraud detection |
+| **Search Engine** | Elasticsearch, Meilisearch | Full-text search, fuzzy matching, faceted filtering | Product search with typo tolerance, log analysis dashboards |
+| **Time-Series** | InfluxDB, TimescaleDB | Data is always timestamped, queried by time ranges, high write volume | Server metrics, stock prices, application performance monitoring |
+| **In-Memory** | Redis, Memcached | Sub-millisecond latency required, data is ephemeral or cache | Rate limiting counters, leaderboards, pub/sub messaging |
+| **NewSQL** | CockroachDB, Spanner | Need SQL + horizontal scalability + strong consistency globally | Global fintech app needing ACID transactions across data centers |
+| **Object Storage** | S3, GCS | Storing large blobs (files, images, videos), not queried relationally | User profile pictures, ML training datasets, backup archives |
+
+---
+
+## Quick Decision Tree
+
+```
+Is your data structured and relational?
+├── Yes → Do you need global scale or strong consistency?
+│         ├── Yes → NewSQL (CockroachDB)
+│         └── No  → Relational SQL (PostgreSQL)
+└── No  → What's the primary access pattern?
+          ├── Lookup by ID         → Key-Value (Redis / DynamoDB)
+          ├── Full-text search     → Search Engine (Elasticsearch)
+          ├── Time-stamped events  → Time-Series (InfluxDB)
+          ├── Highly connected     → Graph (Neo4j)
+          ├── Variable schema      → Document (MongoDB)
+          └── Massive columnar     → Wide-Column (Cassandra)
+```
+
+---
+
+## Common Combos
+
+| Stack | Why |
+|---|---|
+| PostgreSQL + Redis | Primary DB + caching/sessions |
+| MongoDB + Elasticsearch | Document store + search layer |
+| Cassandra + Redis | High-write events + fast lookups |
+| PostgreSQL + S3 | Relational data + file/blob storage |

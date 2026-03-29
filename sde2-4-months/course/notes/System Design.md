@@ -1440,4 +1440,18 @@ A structured approach is key to success in system design interviews. Interviewer
 *   For every major design decision (e.g., SQL vs NoSQL, Monolith vs Microservices, Strong vs Eventual Consistency), can I articulate at least two pros and two cons?
 *   Can I justify my architectural choices based on specific non-functional requirements (e.g., "I chose AP for this part because availability is more critical than immediate consistency for a social media feed")?
 
-This comprehensive guide should equip an SDE-2 candidate with the necessary knowledge and framework to confidently approach system design interviews. Good luck!
+# Most Important Design Patterns & Problems They Solve
+
+| Pattern                  | Category     | Problem It Solves                                                                 | Real-World Use Case                          |
+|--------------------------|-------------|----------------------------------------------------------------------------------|----------------------------------------------|
+| Singleton                | Creational  | Ensures only one instance exists with global access                             | Config manager, logging, cache               |
+| Factory Method           | Creational  | Decouples object creation from usage                                            | Object creation in frameworks                |
+| Builder                  | Creational  | Handles complex object construction step-by-step                                | Creating immutable objects, DTOs             |
+| Strategy                 | Behavioral  | Replaces multiple conditionals with interchangeable algorithms                  | Payment methods, sorting logic               |
+| Observer                 | Behavioral  | Enables event-driven communication (one-to-many dependency)                     | Pub/Sub systems, notifications               |
+| Command                  | Behavioral  | Encapsulates requests as objects                                                | Undo/Redo, job queues                        |
+| State                    | Behavioral  | Changes behavior based on internal state                                        | Order lifecycle, workflow systems            |
+| Decorator                | Structural  | Adds behavior dynamically without modifying original class                      | Java I/O streams, feature extensions         |
+| Adapter                  | Structural  | Makes incompatible interfaces work together                                     | Legacy system integration                    |
+| Facade                   | Structural  | Provides a simplified interface to complex subsystems                           | API gateway, service layer abstraction       |
+| Proxy                    | Structural  | Controls access to an object (lazy loading, security, remote access)            | Virtual proxy, access control                |
