@@ -94,6 +94,8 @@ Multiplicity indicates how many instances of one class are linked to one instanc
 3.  **Consistency:** Use a hollow triangle for any "is-a" logic, and a diamond for "has-a" logic.
 
 
+## Sample Class Diagram for Parking Lot System
+
 ```mermaid
 classDiagram
     class VehicleType {
