@@ -507,7 +507,7 @@ Docker is the most popular container technology. You define a `Dockerfile`, buil
 
 AWS's own container orchestration service. You define "Task Definitions" (what container to run, how much CPU/memory) and "Services" (how many copies to run, how to update them).
 
-ECS manages scheduling containers across a cluster of EC2 instances.
+ECS manages scheduling of containers (tasks) across a cluster of EC2 instances or Fargate instances.
 
 ### EKS (Elastic Kubernetes Service)
 
