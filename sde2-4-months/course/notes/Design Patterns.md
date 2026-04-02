@@ -396,7 +396,7 @@ These patterns are concerned with algorithms and the assignment of responsibilit
         public void pressButton() { command.execute(); }
         public void pressUndo() { command.undo(); }
     }
-    // Usage: Light light = new Light();
+    //Usage: Light light = new Light();
     //        Command turnOn = new TurnOnLightCommand(light);
     //        RemoteControl remote = new RemoteControl();
     //        remote.setCommand(turnOn);
@@ -412,17 +412,17 @@ These patterns are concerned with algorithms and the assignment of responsibilit
 -   **Real-world analogy:** A TV remote's channel buttons. You can cycle through channels without knowing how the TV stores them internally.
 -   **Simple code-level intuition:**
     ```java
-    // Java's built-in Iterator interface is the best example:
-    // interface Iterator<E> {
-    //    boolean hasNext();
-    //    E next();
-    //    void remove(); // Optional
-    // }
-    // List<String> names = Arrays.asList("Alice", "Bob");
-    // Iterator<String> iterator = names.iterator();
-    // while (iterator.hasNext()) {
-    //    System.out.println(iterator.next());
-    // }
+     //Java's built-in Iterator interface is the best example:
+     interface Iterator<E> {
+        boolean hasNext();
+        E next();
+        void remove(); // Optional
+     }
+     List<String> names = Arrays.asList("Alice", "Bob");
+     Iterator<String> iterator = names.iterator();
+     while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+     }
     ```
 -   **Interview example question:** "You have a custom collection class that stores data in a complex, non-standard way. How can you allow other parts of your application to iterate over its elements without exposing its internal data structure?"
 
@@ -484,7 +484,7 @@ These patterns are concerned with algorithms and the assignment of responsibilit
     // Usage: ReportGenerator excelGen = new ExcelReportGenerator();
     //        excelGen.generateReport(); // Executes the fixed sequence of steps
     ```
--   **Interview example question:** "-   **Interview example question:** "Your application needs to process various types of documents (e.g., PDF, Word, plain text) from different sources. Each document type requires a slightly different parsing logic, but the overall workflow (fetch, parse, validate, store) is similar. How would you design this processing pipeline to allow for document-specific customizations while maintaining a consistent overall structure?"
+-   **Interview example question:** - "Your application needs to process various types of documents (e.g., PDF, Word, plain text) from different sources. Each document type requires a slightly different parsing logic, but the overall workflow (fetch, parse, validate, store) is similar. How would you design this processing pipeline to allow for document-specific customizations while maintaining a consistent overall structure?"
 
 ---
 

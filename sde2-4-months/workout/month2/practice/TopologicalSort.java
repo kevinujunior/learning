@@ -29,6 +29,16 @@ public class TopologicalSort {
      * 1 = currently in recursion stack (visiting)
      * 2 = fully processed (visited)
      */
+    /**
+     * 
+     * 0 → 1 → 3
+     * \ ↑
+     * → 2 ───
+     * 
+     * Consider this graph having only 2 states 0 1 will give a cycle here ,
+     * we need to track if current element is in rec stack (not in dfs path)
+     * 
+     */
     void dfs(int v, int[] vis, Deque<Integer> st) {
         vis[v] = 1; // mark node as visiting
 
@@ -36,15 +46,15 @@ public class TopologicalSort {
         for (int n : adj.get(v)) {
             if (vis[n] == 0) {
                 dfs(n, vis, st);
-            } 
+            }
             // Back-edge found → cycle exists
             else if (vis[n] == 1) {
                 throw new IllegalStateException("Cycle detected");
             }
         }
 
-        vis[v] = 2;   // mark node as fully processed
-        st.push(v);   // push after processing all dependencies
+        vis[v] = 2; // mark node as fully processed
+        st.push(v); // push after processing all dependencies
     }
 
     /**
@@ -136,4 +146,4 @@ public class TopologicalSort {
         // BFS-based topological sort (Kahn's algorithm)
         tp.bfsTopoSort();
     }
-} 
+}
