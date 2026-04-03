@@ -211,6 +211,11 @@ public class Main {
         out.println(treeSet.ceiling(5)); // 2 (Smallest element >= 5)
         out.println(treeSet.floor(5)); // 8 (Largest element <= 5)
 
+        // lower(E e) → Greatest element < e
+        // higher(E e) → Smallest element > e
+        // floor(E e) → Greatest element ≤ e
+        // ceiling(E e) → Smallest element ≥ e
+
 
         // --- HashMap (Unordered, key-value pairs, O(1) average time) ---
         Map<String, Integer> map = new HashMap<>(); // Use Map interface for declaration
