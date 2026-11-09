@@ -34,45 +34,76 @@ public class UltimateTemplate {
     // ========================================================================
     // FAST I/O
     // ========================================================================
+   // ----------- Fast input/output start -----------
+    // A custom FastReader is much faster than Scanner, which matters for large inputs.
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
+
         String next() {
-            while (st == null || !st.hasMoreElements()) {
-                try { st = new StringTokenizer(br.readLine()); } catch (IOException e) { e.printStackTrace(); }
+            while (st == null || !st.hasMoreTokens()) {
+                try {
+                    String line = br.readLine();
+                    if (line == null) return null;      // end of input
+                    st = new StringTokenizer(line);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return st.nextToken();
         }
-        int nextInt() { return Integer.parseInt(next()); }
-        long nextLong() { return Long.parseLong(next()); }
-        double nextDouble() { return Double.parseDouble(next()); }
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
+        }
+
         String nextLine() {
             String str = "";
-            try { str = br.readLine(); } catch (IOException e) { e.printStackTrace(); }
+            try {
+                str = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return str;
         }
     }
 
     static FastReader sc = new FastReader();
+    // PrintWriter is buffered, so output is much faster than System.out.println.
     static PrintWriter out = new PrintWriter(System.out);
+    // ----------- Fast input/output end -----------
 
-    // ========================================================================
-    // MAIN TEMPLATE
-    // ========================================================================
     public static void main(String[] args) {
+        // Keep the logic in solve() so it is easy to loop over test cases.
         solve();
-        out.flush();
+        out.flush();                                   // don't forget to flush the PrintWriter!
     }
 
-    static void solve() {
-        // int t = sc.nextInt();
-        // while (t-- > 0) {
-        //     // Your code here
-        // }
+    public static void solve() {
+        int t = sc.nextInt();                          // number of test cases
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            long m = sc.nextLong();
+            // String s = sc.next();                   // one token
+            // String line = sc.nextLine();            // a whole line (see note below)
+            out.println("Result: " + (n + m));
+        }
     }
+
+    // helper methods from UltimateTemplate.java go here
+
 
     // ========================================================================
     // 1. GRAPH REPRESENTATIONS & TRAVERSALS
@@ -585,8 +616,18 @@ public class UltimateTemplate {
             return node != null ? node.count : 0;
         }
         
-        void delete(String word) {
+        boolean delete(String word) {
+            if (!search(word)) return false;
+
+            TrieNode node = root;
+
+            for (char c : word.toCharArray()) {
+                node = node.children.get(c);
+                node.count--;
+            }
+
             deleteHelper(root, word, 0);
+            return true;
         }
         
         private boolean deleteHelper(TrieNode node, String word, int idx) {
@@ -1056,7 +1097,7 @@ public class UltimateTemplate {
     // ========================================================================
     // 11. BIT MANIPULATION
     // ========================================================================
-
+    
     static boolean isBitSet(long n, int k) {
         return ((n >> k) & 1) == 1;
     }
