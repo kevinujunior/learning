@@ -447,7 +447,9 @@ int posMod = Math.floorMod(a, m); // handles negative numbers correctly (-7 % 3 
 
 // Prefix Sum
 int[] pre = new int[n + 1];
-for (int idx = 0; idx < n; idx++) pre[idx + 1] = pre[idx] + a[idx];
+for (int i = 0; i < n; i++) pre[i + 1] = pre[i] + a[i];
+//usage (left to right - inclusive)
+int rangeSum = pre[right + 1] - pre[left];
 
 // GCD & LCM
 int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
@@ -469,10 +471,26 @@ int INF = Integer.MAX_VALUE;
 int NEG = Integer.MIN_VALUE;
 long LINF = Long.MAX_VALUE;
 
+//safe ncr for large numbers
+
+int nCr(int n, int r) {
+    long ans = 1;
+    if (r > n - r) {
+        r = n - r;
+    }
+    for (int i = 1; i <= r; i++) {
+        ans = ans * (n - r + i) / i;
+    }
+    return (int)ans;
+}
+
+
 // Debug Prints
 System.out.println(Arrays.toString(nums));
 System.out.println(Arrays.deepToString(matrix));
 ```
+
+---
 
 ## 14. Lambdas, streams, Optional
 
